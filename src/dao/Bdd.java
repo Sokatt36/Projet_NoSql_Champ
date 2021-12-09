@@ -20,9 +20,11 @@ public class Bdd {
         return session.run(insrt);
     }
 
-    public void creerClub(String data){
+    public void creerJoueur(String data){
         run(data);
-
+    }
+    public void creerRelation(String data){
+        run(data);
     }
 
 
