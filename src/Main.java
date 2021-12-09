@@ -6,7 +6,5 @@ public class Main {
         bdd.connect();
         bdd.creerClub("CREATE (n:Test3 {name: 'Andy3', title: 'Developer3'})");
         bdd.close();
-
-
     }
 }
