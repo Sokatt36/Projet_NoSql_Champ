@@ -12,9 +12,10 @@ public class Main {
         bdd.connect();
         bdd.deleteBase();
         // Création des noeuds et des relations
+        metier.Applic.creerJoueurs(bdd);
         metier.Applic.creerPays(bdd);
         metier.Applic.creerChampionnat(bdd);
-        metier.Applic.creerJoueursEtRelations(bdd);
+        metier.Applic.creerRelations(bdd);
         // close bdd
         bdd.close();
     }

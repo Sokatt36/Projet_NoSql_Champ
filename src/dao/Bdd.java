@@ -24,35 +24,41 @@ public class Bdd {
     public String getRandomChamp(){
         Random rd = new Random();
         String[] lst = readFile.getChampionnats().toArray(new String[readFile.getChampionnats().size()]);
-        int random = rd.nextInt(8);
-        return lst[random+1];
+        int random = rd.nextInt(9);
+        return lst[random];
     }
 
     public String getRandomPays(){
         Random rd = new Random();
         String[] lst = readFile.getPays().toArray(new String[readFile.getPays().size()]);
-        int random = rd.nextInt(8);
-        return lst[random+1];
+        int random = rd.nextInt(20);
+        return lst[random];
     }
 
     public void creerJoueur(String... data){
         run("CREATE (n:Joueur {nom: '"+data[0]+"',prenom :'"+data[1]+"', age: '"+data[2]+"', general :'"+data[3]+"'})");
     }
+
     public void creerPays(String data){
         run("CREATE (n:Pays {nom: '"+data+"'})");
     }
+
     public void creerChampionnat(String data){
         run("CREATE (n:Championnat {nom: '"+data+"'})");
     }
+
     public void deleteBase(){
         run("match(a) detach delete a");
     }
+
     public void deleteJoueur(){
         run("match(a:Joueur) detach delete a");
     }
+
     public void creerRelationJoueurNationnalite(String ...data){
         run("match(a:Joueur{nom: '"+data[0]+"',prenom :'"+data[1]+"', age: '"+data[2]+"', general :'"+data[3]+"'}),(b:Pays{nom:'"+getRandomPays()+"'})create (a)-[r:JOUE_DANS_PAYS]->(b) return a,b,r ");
     }
+
     public void creerRelationJoueurChampionnat(String...data){
         run("match(a:Joueur{nom: '"+data[0]+"',prenom :'"+data[1]+"', age: '"+data[2]+"', general :'"+data[3]+"'}),(b:Championnat{nom:'"+getRandomChamp()+"'})create (a)-[r:JOUE_DANS_CHAMPIONNAT]->(b) return a,b,r ");
     }
