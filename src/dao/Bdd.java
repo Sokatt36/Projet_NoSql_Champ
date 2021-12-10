@@ -20,11 +20,26 @@ public class Bdd {
         return session.run(insrt);
     }
 
-    public void creerJoueur(String data){
-        run(data);
+    public void creerJoueur(String... data){
+        run("CREATE (n:Joueur {nom: '"+data[0]+"',prenom :'"+data[1]+"', pays: '"+data[2]+"', championnat :'"+data[3]+"'})");
+        close();
     }
-    public void creerRelation(String data){
-        run(data);
+    public void creerRelationJoueurNationnalite(String pays){
+        run("match(a:Joueur {pays: '"+pays+"'}),(b:Joueur {pays: '"+pays+"'}) where id(b)<>id(a) create (a)-[r:MEME_NATIONALITE]->(b) return a,b,r");
+        close();
+    }
+    public void creerRelationJoueurChampionnat(String championnat){
+        run("match(a:Joueur {championnat: '"+championnat+"'}),(b:Joueur {championnat: '"+championnat+"'}) where id(b)<>id(a) create (a)-[r:MEME_CHAMPIONNAT]->(b) return a,b,r");
+        close();
+    }
+    public void deleteRelationJoueurNationnalite(){
+        run("MATCH (n:Joueur)-[r:MEME_NATIONALITE]->() delete r");
+        close();
+    }
+    public void deleteRalationJoueurChampionnat(){
+        run("MATCH (n:Joueur)-[r:MEME_CHAMPIONNAT]->() delete r");
+        close();
+
     }
 
 
