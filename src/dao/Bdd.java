@@ -28,6 +28,13 @@ public class Bdd {
         return lst[random+1];
     }
 
+    public String getRandomPays(){
+        Random rd = new Random();
+        String[] lst = readFile.getPays().toArray(new String[readFile.getPays().size()]);
+        int random = rd.nextInt(8);
+        return lst[random+1];
+    }
+
     public void creerJoueur(String... data){
         run("CREATE (n:Joueur {nom: '"+data[0]+"',prenom :'"+data[1]+"', age: '"+data[2]+"', general :'"+data[3]+"'})");
     }

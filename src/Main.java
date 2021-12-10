@@ -10,6 +10,7 @@ public class Main {
         bdd.connect();
 
         System.out.println(bdd.getRandomChamp());
+        System.out.println(bdd.getRandomPays());
 
 //        for (String[] data : Objects.requireNonNull(readFile.getJoueurs())){
 //            System.out.println(data[0] + " " + data[1] + " " + data[2]);
