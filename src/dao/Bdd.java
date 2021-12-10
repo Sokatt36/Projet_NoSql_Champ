@@ -44,24 +44,17 @@ public class Bdd {
     public void creerChampionnat(String data){
         run("CREATE (n:Championnat {nom: '"+data+"'})");
     }
+    public void deleteBase(){
+        run("match(a) detach delete a");
+    }
     public void deleteJoueur(){
         run("match(a:Joueur) detach delete a");
     }
-    public void creerRelationJoueurNationnalite(String pays){
-        run("match(a:Joueur {pays: '"+pays+"'}),(b:Joueur {pays: '"+pays+"'}) where id(b)<>id(a) create (a)-[r:MEME_NATIONALITE]->(b) return a,b,r");
+    public void creerRelationJoueurNationnalite(String ...data){
+        run("match(a:Joueur{nom: '"+data[0]+"',prenom :'"+data[1]+"', age: '"+data[2]+"', general :'"+data[3]+"'}),(b:Pays{nom:'"+getRandomPays()+"'})create (a)-[r:JOUE_DANS_PAYS]->(b) return a,b,r ");
     }
-    public void creerRelationJoueurChampionnat(String championnat){
-        run("match(a:Joueur {championnat: '"+championnat+"'}),(b:Joueur {championnat: '"+championnat+"'}) where id(b)<>id(a) create (a)-[r:MEME_CHAMPIONNAT]->(b) return a,b,r");
+    public void creerRelationJoueurChampionnat(String...data){
+        run("match(a:Joueur{nom: '"+data[0]+"',prenom :'"+data[1]+"', age: '"+data[2]+"', general :'"+data[3]+"'}),(b:Championnat{nom:'"+getRandomChamp()+"'})create (a)-[r:JOUE_DANS_CHAMPIONNAT]->(b) return a,b,r ");
     }
-    public void deleteRelationJoueurNationnalite(){
-        run("MATCH (n:Joueur)-[r:MEME_NATIONALITE]->() delete r");
-        close();
-    }
-    public void deleteRalationJoueurChampionnat(){
-        run("MATCH (n:Joueur)-[r:MEME_CHAMPIONNAT]->() delete r");
-        close();
-
-    }
-
 
 }

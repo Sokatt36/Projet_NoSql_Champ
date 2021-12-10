@@ -8,27 +8,31 @@ public class Main {
     public static void main(String[] args) {
         Bdd bdd= new Bdd();
         bdd.connect();
+        bdd.deleteBase();
 
         System.out.println(bdd.getRandomChamp());
         System.out.println(bdd.getRandomPays());
 
-//        for (String[] data : Objects.requireNonNull(readFile.getJoueurs())){
-//            System.out.println(data[0] + " " + data[1] + " " + data[2]);
-//            bdd.creerJoueur(data);
-//        }
+
 
         //bdd.deleteJoueur();
 //
 //
-//        for (String data: Objects.requireNonNull(readFile.getPays())) {
-//            System.out.println(data);
-//            bdd.creerPays(data);
-//        }
-////
-//       for (String data: Objects.requireNonNull(readFile.getChampionnats())) {
-//            System.out.println(data);
-//            bdd.creerChampionnat(data);
-//        }
+        for (String data: Objects.requireNonNull(readFile.getPays())) {
+            System.out.println(data);
+            bdd.creerPays(data);
+        }
+
+       for (String data: Objects.requireNonNull(readFile.getChampionnats())) {
+            System.out.println(data);
+            bdd.creerChampionnat(data);
+        }
+        for (String[] data : Objects.requireNonNull(readFile.getJoueurs())){
+            System.out.println(data[0] + " " + data[1] + " " + data[2]);
+            bdd.creerJoueur(data);
+            bdd.creerRelationJoueurNationnalite(data);
+            bdd.creerRelationJoueurChampionnat(data);
+        }
 
 //        Result res = bdd.run("match(a:Joueur) return a");
 //        System.out.println(res);
