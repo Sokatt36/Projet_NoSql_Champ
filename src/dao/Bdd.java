@@ -2,6 +2,8 @@ package dao;
 
 import org.neo4j.driver.*;
 
+import java.util.*;
+
 public class Bdd {
     private Driver driver;
     private Session session;
@@ -19,6 +21,12 @@ public class Bdd {
         return session.run(insrt);
     }
 
+    public String getRandomChamp(){
+        Random rd = new Random();
+        String[] lst = readFile.getChampionnats().toArray(new String[readFile.getChampionnats().size()]);
+        int random = rd.nextInt(8);
+        return lst[random+1];
+    }
 
     public void creerJoueur(String... data){
         run("CREATE (n:Joueur {nom: '"+data[0]+"',prenom :'"+data[1]+"', age: '"+data[2]+"', general :'"+data[3]+"'})");

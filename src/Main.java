@@ -9,10 +9,12 @@ public class Main {
         Bdd bdd= new Bdd();
         bdd.connect();
 
-        for (String[] data : Objects.requireNonNull(readFile.getJoueurs())){
-            System.out.println(data[0] + " " + data[1] + " " + data[2]);
-            bdd.creerJoueur(data);
-        }
+        System.out.println(bdd.getRandomChamp());
+
+//        for (String[] data : Objects.requireNonNull(readFile.getJoueurs())){
+//            System.out.println(data[0] + " " + data[1] + " " + data[2]);
+//            bdd.creerJoueur(data);
+//        }
 
         //bdd.deleteJoueur();
 //
