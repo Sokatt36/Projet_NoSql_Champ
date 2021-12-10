@@ -19,8 +19,12 @@ public class Bdd {
         return session.run(insrt);
     }
 
+
     public void creerJoueur(String... data){
         run("CREATE (n:Joueur {nom: '"+data[0]+"',prenom :'"+data[1]+"', pays: '"+data[2]+"', championnat :'"+data[3]+"'})");
+    }
+    public void deleteJoueur(){
+        run("match(a:Joueur) detach delete a");
     }
     public void creerRelationJoueurNationnalite(String pays){
         run("match(a:Joueur {pays: '"+pays+"'}),(b:Joueur {pays: '"+pays+"'}) where id(b)<>id(a) create (a)-[r:MEME_NATIONALITE]->(b) return a,b,r");
