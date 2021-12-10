@@ -8,7 +8,7 @@ import java.util.Objects;
 public class Main {
     public static void main(String[] args) {
         //Connection à la bdd
-        Bdd bdd= new Bdd();
+        Bdd bdd = new Bdd();
         bdd.connect();
         bdd.deleteBase();
         // Création des noeuds et des relations
