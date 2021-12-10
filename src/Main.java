@@ -1,23 +1,36 @@
+import dao.Bdd;
 import dao.readFile;
+import org.neo4j.driver.Result;
 
 import java.util.Objects;
 
 public class Main {
     public static void main(String[] args) {
-        for (String[] data : Objects.requireNonNull(readFile.getClub())){
-            System.out.println(data[0] + " " + data[1] + " " + data[2]);
-        }
         Bdd bdd= new Bdd();
         bdd.connect();
-        //bdd.creerClub("CREATE (n:Joueur {name: 'Alex',prenom :'Santana', pays: 'France', championnat :'BPL'})");
-        bdd.creerJoueur("CREATE (n:Joueur {name: 'Bob',prenom :'Sincl', pays: 'France', championnat :'Bres'})");
-        bdd.creerJoueur("CREATE (n:Joueur {name: 'Bobi',prenom :'topo', pays: 'France', championnat :'Bres'})");
-        bdd.creerJoueur("CREATE (n:Joueur {name: 'toto',prenom :'franki', pays: 'France', championnat :'Bres'})");
+        for (String[] data : Objects.requireNonNull(readFile.getJoueurs())){
+            System.out.println(data[0] + " " + data[1] + " " + data[2]);
+            bdd.creerJoueur(data);
+        }
 
+        for (String data: Objects.requireNonNull(readFile.getPays())) {
+            System.out.println(data);
+            bdd.creerRelationJoueurNationnalite(data);
+        }
 
-        // relation match(a:Joueur {pays:'France'}),(b:Joueur {pays:'France'}) where id(b)<>id(a) create (a)-[r:MEME_NATIONALITE]->(b) return a,b,r
+        for (String data: Objects.requireNonNull(readFile.getChampionnats())) {
+            System.out.println(data);
+            bdd.creerRelationJoueurChampionnat(data);
+        }
 
-        // bdd.creerRelation("match(p1:Joueur{name:'Seb', prenom:'Jemini'}), (p2:Person{prenom:'Santana', name:'Alex'})" +"create (p1) -[r:MEME_PAYS]-> (p2) return p1, p2,r");
+        Result res = bdd.run("match(a:Joueur) return a");
+        System.out.println(res);
+//        int cpt = 0;
+//        while (res.hasNext()){
+//            System.out.println(cpt);
+//            System.out.println(res.stream());
+//            cpt++;
+//        }
         bdd.close();
     }
 }

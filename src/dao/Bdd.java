@@ -8,8 +8,7 @@ public class Bdd {
     public void connect(){
         Driver driver =  GraphDatabase.driver("neo4j+s://50878d8c.databases.neo4j.io", AuthTokens.basic("neo4j","BciHCOaxbCa9dzzTBq3JHoM76YVSVwLHYFpWItNruNg"));
        this.driver = driver;
-        Session session = driver.session();
-        this.session = session;
+        this.session = driver.session();
     }
     public void close() {
         session.close();
@@ -22,15 +21,12 @@ public class Bdd {
 
     public void creerJoueur(String... data){
         run("CREATE (n:Joueur {nom: '"+data[0]+"',prenom :'"+data[1]+"', pays: '"+data[2]+"', championnat :'"+data[3]+"'})");
-        close();
     }
     public void creerRelationJoueurNationnalite(String pays){
         run("match(a:Joueur {pays: '"+pays+"'}),(b:Joueur {pays: '"+pays+"'}) where id(b)<>id(a) create (a)-[r:MEME_NATIONALITE]->(b) return a,b,r");
-        close();
     }
     public void creerRelationJoueurChampionnat(String championnat){
         run("match(a:Joueur {championnat: '"+championnat+"'}),(b:Joueur {championnat: '"+championnat+"'}) where id(b)<>id(a) create (a)-[r:MEME_CHAMPIONNAT]->(b) return a,b,r");
-        close();
     }
     public void deleteRelationJoueurNationnalite(){
         run("MATCH (n:Joueur)-[r:MEME_NATIONALITE]->() delete r");
