@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class readFile {
-    private static final String FILENAME = "Club.csv";
+    private static final String FILENAME = "joueurs.csv";
 
     public static List<String[]> getClub(){
             try {
@@ -15,7 +15,7 @@ public class readFile {
                 List<String[]> aLst = new ArrayList<>();
                 String ligne;
                 while ((ligne = reader.readLine()) != null){
-                    String[] data = ligne.split(";");
+                    String[] data = ligne.split(",");
                     aLst.add(data);
                 }
                 reader.close();
