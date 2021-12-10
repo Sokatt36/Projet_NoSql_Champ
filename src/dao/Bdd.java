@@ -21,7 +21,13 @@ public class Bdd {
 
 
     public void creerJoueur(String... data){
-        run("CREATE (n:Joueur {nom: '"+data[0]+"',prenom :'"+data[1]+"', pays: '"+data[2]+"', championnat :'"+data[3]+"'})");
+        run("CREATE (n:Joueur {nom: '"+data[0]+"',prenom :'"+data[1]+"', age: '"+data[2]+"', general :'"+data[3]+"'})");
+    }
+    public void creerPays(String data){
+        run("CREATE (n:Pays {nom: '"+data+"'})");
+    }
+    public void creerChampionnat(String data){
+        run("CREATE (n:Championnat {nom: '"+data+"'})");
     }
     public void deleteJoueur(){
         run("match(a:Joueur) detach delete a");

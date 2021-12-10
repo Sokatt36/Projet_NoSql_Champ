@@ -10,6 +10,8 @@ import java.util.Set;
 
 public class readFile {
     private static final String FILENAME = "joueurs.csv";
+    private static final String FILENAME2 = "pays.csv";
+    private static final String FILENAME3 = "championnat.csv";
 
     public static List<String[]> getJoueurs(){
             try {
@@ -22,18 +24,16 @@ public class readFile {
                 }
                 reader.close();
                 return aLst;
-
             }  catch (IOException e) { e.printStackTrace(); return null;}
     }
 
     public static Set<String> getPays(){
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(FILENAME));
+            BufferedReader reader = new BufferedReader(new FileReader(FILENAME2));
             Set<String> champ = new HashSet<>();
             String ligne;
             while ((ligne = reader.readLine()) != null){
-                String[] data = ligne.split(",");
-                champ.add(data[2]);
+                champ.add(ligne);
             }
             reader.close();
             return champ;
@@ -43,12 +43,11 @@ public class readFile {
 
     public static Set<String> getChampionnats(){
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(FILENAME));
+            BufferedReader reader = new BufferedReader(new FileReader(FILENAME3));
             Set<String> champ = new HashSet<>();
             String ligne;
             while ((ligne = reader.readLine()) != null){
-                String[] data = ligne.split(",");
-                champ.add(data[3]);
+                champ.add(ligne);
             }
             reader.close();
             return champ;
