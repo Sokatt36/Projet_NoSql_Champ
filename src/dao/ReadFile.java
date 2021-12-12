@@ -12,6 +12,7 @@ public class ReadFile {
     private static final String FILENAME = "joueurs.csv";
     private static final String FILENAME2 = "pays.csv";
     private static final String FILENAME3 = "championnat.csv";
+    private static final String FILENAME4 = "poste.csv";
 
     public static List<String[]> getJoueurs(){
             try {
@@ -51,6 +52,19 @@ public class ReadFile {
             }
             reader.close();
             return champ;
+
+        }  catch (IOException e) { e.printStackTrace(); return null;}
+    }
+    public static Set<String> getPoste(){
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(FILENAME4));
+            Set<String> poste = new HashSet<>();
+            String ligne;
+            while ((ligne = reader.readLine()) != null){
+                poste.add(ligne);
+            }
+            reader.close();
+            return poste;
 
         }  catch (IOException e) { e.printStackTrace(); return null;}
     }

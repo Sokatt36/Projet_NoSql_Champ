@@ -20,6 +20,13 @@ public class Applic {
             bdd.creerChampionnat(data);
         }
     }
+    public static void creerPoste(Bdd bdd){
+        for (String data: ReadFile.getPoste()) {
+//            System.out.println(data);
+            bdd.creerPoste(data);
+        }
+    }
+
 
     public static void creerJoueurs(Bdd bdd){
         for (String[] data : ReadFile.getJoueurs()){
@@ -32,12 +39,14 @@ public class Applic {
         for (String[] data : Objects.requireNonNull(ReadFile.getJoueurs())){
             bdd.creerRelationJoueurNationnalite(data);
             bdd.creerRelationJoueurChampionnat(data);
+            bdd.creerRelationJoueurPoste(data);
         }
     }
     public  static void creerBdd(Bdd bdd){
         creerJoueurs(bdd);
         creerPays(bdd);
         creerChampionnat(bdd);
+        creerPoste(bdd);
         creerRelations(bdd);
     }
 }
