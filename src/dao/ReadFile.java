@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class readFile {
+public class ReadFile {
     private static final String FILENAME = "joueurs.csv";
     private static final String FILENAME2 = "pays.csv";
     private static final String FILENAME3 = "championnat.csv";

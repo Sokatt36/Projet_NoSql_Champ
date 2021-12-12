@@ -23,14 +23,14 @@ public class Bdd {
 
     public String getRandomChamp(){
         Random rd = new Random();
-        String[] lst = readFile.getChampionnats().toArray(new String[readFile.getChampionnats().size()]);
+        String[] lst = ReadFile.getChampionnats().toArray(new String[ReadFile.getChampionnats().size()]);
         int random = rd.nextInt(9);
         return lst[random];
     }
 
     public String getRandomPays(){
         Random rd = new Random();
-        String[] lst = readFile.getPays().toArray(new String[readFile.getPays().size()]);
+        String[] lst = ReadFile.getPays().toArray(new String[ReadFile.getPays().size()]);
         int random = rd.nextInt(20);
         return lst[random];
     }
