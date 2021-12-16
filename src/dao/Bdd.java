@@ -42,6 +42,15 @@ public class Bdd {
         return lst[random];
     }
 
+    public String enleverGuillemet(String i){
+        String mot = "";
+        for (int j = 0; j < i.length(); j++) {
+            if (i.charAt(j) != '"'){
+                mot += i.charAt(j);
+            }
+        }
+        return mot;
+    }
 
     public void creerJoueur(String... data){
         run("CREATE (n:Joueur {nom: '"+data[0]+"',prenom :'"+data[1]+"', age: '"+data[2]+"', general :'"+data[3]+"'})");
@@ -76,19 +85,4 @@ public class Bdd {
     public void creerRelationJoueurPoste(String...data){
         run("match(a:Joueur{nom: '"+data[0]+"',prenom :'"+data[1]+"', age: '"+data[2]+"', general :'"+data[3]+"'}),(b:Poste{nom:'"+getRandomPoste()+"'})create (a)-[r:JOUE_DANS_POSTE]->(b) return a,b,r ");
     }
-
-    public void requeteJoueur(String rqt){
-        Result result = run(rqt);
-        String rows = "";
-        while (result.hasNext()){
-           Record ligne = result.next();
-           ligne.asMap();
-            for ( Map.Entry<String,Object> column : ligne.asMap().entrySet() )
-            {
-                rows += column.getKey() + ": " + column.getValue() +" "+ "; ";
-            }
-        }
-        System.out.println(rows);
-    }
-
 }
