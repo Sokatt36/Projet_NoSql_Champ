@@ -1,6 +1,7 @@
 package dao;
 
 import org.neo4j.driver.*;
+import org.neo4j.driver.Record;
 
 import java.util.*;
 
@@ -74,6 +75,20 @@ public class Bdd {
     }
     public void creerRelationJoueurPoste(String...data){
         run("match(a:Joueur{nom: '"+data[0]+"',prenom :'"+data[1]+"', age: '"+data[2]+"', general :'"+data[3]+"'}),(b:Poste{nom:'"+getRandomPoste()+"'})create (a)-[r:JOUE_DANS_POSTE]->(b) return a,b,r ");
+    }
+
+    public void requeteJoueur(String rqt){
+        Result result = run(rqt);
+        String rows = "";
+        while (result.hasNext()){
+           Record ligne = result.next();
+           ligne.asMap();
+            for ( Map.Entry<String,Object> column : ligne.asMap().entrySet() )
+            {
+                rows += column.getKey() + ": " + column.getValue() +" "+ "; ";
+            }
+        }
+        System.out.println(rows);
     }
 
 }

@@ -5,10 +5,11 @@ public class Main {
         //Connection à la bdd
         Bdd bdd = new Bdd();
         bdd.connect();
-        bdd.deleteBase();
+        //bdd.deleteBase();
         // Création des noeuds et des relations
-        metier.Applic.creerBdd(bdd);
+        //metier.Applic.creerBdd(bdd);
         // close bdd
+        bdd.requeteJoueur("match(a:Joueur{age:'21'}) return a.age, a.nom)");
         bdd.close();
     }
 }
