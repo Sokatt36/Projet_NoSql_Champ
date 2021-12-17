@@ -9,7 +9,8 @@ public class Main {
        //bdd.deleteBase();
         // Création des noeuds et des relations
        // metier.Applic.creerBdd(bdd);
-        System.out.println(Applic.getMeilleurJoueur(bdd));
+        //System.out.println(Applic.getMeilleurJoueur(bdd));
+        Applic.getListeJoueurCompatibleDansPoste(bdd);
         // close bdd
         bdd.close();
     }
