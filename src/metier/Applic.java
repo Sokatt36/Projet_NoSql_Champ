@@ -3,8 +3,11 @@ package metier;
 import dao.Bdd;
 import dao.ReadFile;
 import domaine.Joueur;
+import domaine.JoueurAvecRelation;
+import jdk.swing.interop.SwingInterOpUtils;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
+import org.neo4j.driver.Value;
 import org.neo4j.driver.exceptions.NoSuchRecordException;
 import org.neo4j.driver.types.Node;
 import org.neo4j.driver.types.Path;
@@ -146,38 +149,43 @@ public class Applic {
         }
         Result rqt = bdd.run("match(j:Joueur) -[:JOUE_DANS_POSTE]-> (p2:Poste)," +
                 "(j) -[:JOUE_DANS_PAYS]-> (jp:Pays)," +
+                "(j) -[:JOUE_DANS_CHAMPIONNAT]-> (jc:Championnat)," +
                 "(j2:Joueur) -[:JOUE_DANS_POSTE]-> (p:Poste{nom:\""+ poste +"\"})," +
-                "(j2) -[JOUE_DANS_PAYS]-> (jp2:Pays)," +
+                "(j2) -[:JOUE_DANS_PAYS]-> (jp2:Pays)," +
+                "(j2) -[:JOUE_DANS_CHAMPIONNAT]-> (jc2:Championnat)," +
                 "path = shortestPath((j)-[*]-(j2)) " +
                 "where ID(j) = "+ id1 +
-                " return path,p,p2" +
+                " return j,path,p,p2,jp,jc,jp2,jc2" +
                 " order by (j2.general) desc" +
                 " limit 18");
 
+        Record rJoueur = rqt.next();
+        Value valueJoueur = rJoueur.get("j");
 
+        Joueur j = new Joueur(valueJoueur.get("general").asString(), valueJoueur.get("nom").asString(), valueJoueur.get("prenom").asString(), valueJoueur.get("age").asString());
+        JoueurAvecRelation jvr = new JoueurAvecRelation(j, rJoueur.get("jp").get("nom").asString(), rJoueur.get("jc").get("nom").asString(), rJoueur.get("p2").get("nom").asString());
+
+        System.out.println(j.getNom() + " " + j.getPrenom() + " souhaite trouver un " + poste + ". Voici les différents chemin afin d'accéder aux différentes possibilités : \n");
         while (rqt.hasNext()) {
-            Record ligne = rqt.next();
-            Path path = ligne.get("path").asPath();
+            Record rJoueur2 = rqt.next();
+            Path path = rJoueur2.get("path").asPath();
 
-            System.out.println(ligne.get("p2").get("nom").asString());
+            System.out.print("Chemin : ");
             for (Node node : path.nodes()) {
-                System.out.println(node.get("nom").asString());
+                System.out.print(node.get("nom").asString() + " --> ");
             }
-            System.out.println(ligne.get("p").get("nom").asString());
+
+            if(jvr.getChampionnat().equals(rJoueur2.get("jc2").get("nom").asString()) && jvr.getNationnalite().equals(rJoueur2.get("jp2").get("nom").asString())){
+                System.out.print("Parfait ! Lien vert, ils jouent pour le même pays et le même championnat");
+            }else if (jvr.getNationnalite().equals(rJoueur2.get("jp2").get("nom").asString())){
+                System.out.print("Pas mal ! Lien jaune car ils ont la même nationnalité mais pas le même championnat.");
+            }else if(jvr.getChampionnat().equals(rJoueur2.get("jc2").get("nom").asString())){
+                System.out.print("Pas mal ! Lien jaune car ils ont le même championnat mais pas la même nationnalité.");
+            }else{
+                System.out.print("Aïe... Lien rouge. Ni le même championnat, ni le même pays.");
+            }
             System.out.println();
         }
-
-        //String rows = "";
-
-
-
-        /*while (rqt.hasNext()){
-            Record ligne = rqt.next();
-            Path path = ligne.get("path").asPath();
-            System.out.println(path);
-            Joueur j = new Joueur(bdd.enleverGuillemet(ligne.get(0).get("general").toString()), bdd.enleverGuillemet(ligne.get(0).get("nom").toString()),bdd.enleverGuillemet(ligne.get(0).get("prenom").toString()), bdd.enleverGuillemet(ligne.get(0).get("age").toString()));
-            rows = "Le meilleur joueur pour collaborer est " + j.getNom() + " " + j.getPrenom() + ". Ce joueur/joueuse a comme général " + j.getGeneral() + " et a " + j.getAge() + " ans.";
-        }*/
     }
 
 }

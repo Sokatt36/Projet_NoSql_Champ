@@ -6,9 +6,10 @@ public class Main {
         //Connection à la bdd
         Bdd bdd = new Bdd();
         bdd.connect();
+        //Suppréssion BDD afin de rendre le script constemment exécutable
        //bdd.deleteBase();
         // Création des noeuds et des relations
-       // metier.Applic.creerBdd(bdd);
+        //metier.Applic.creerBdd(bdd);
         //System.out.println(Applic.getMeilleurJoueur(bdd));
         Applic.getListeJoueurCompatibleDansPoste(bdd);
         // close bdd
