@@ -28,4 +28,14 @@ public class Joueur {
     public String getAge() {
         return age;
     }
+
+    @Override
+    public String toString() {
+        return "Joueur{" +
+                "general='" + general + '\'' +
+                ", nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", age='" + age + '\'' +
+                '}';
+    }
 }

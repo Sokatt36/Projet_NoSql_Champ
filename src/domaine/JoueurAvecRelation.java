@@ -41,4 +41,14 @@ public class JoueurAvecRelation {
     public String getAge() {
         return joueur.getAge();
     }
+
+    @Override
+    public String toString() {
+        return "JoueurAvecRelation{" +
+                "joueur=" + joueur.toString() +
+                ", nationnalite='" + nationnalite + '\'' +
+                ", championnat='" + championnat + '\'' +
+                ", poste='" + poste + '\'' +
+                '}';
+    }
 }

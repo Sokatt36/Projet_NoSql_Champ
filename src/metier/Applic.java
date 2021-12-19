@@ -97,6 +97,40 @@ public class Applic {
         }
         return rows;
     }
+    public static void getJoueurNationnalite(Bdd bdd) {
+        //Scanner scanId1 = new Scanner(System.in);
+        //System.out.println("Entrez une nationnalité ");
+        //String nationalite = scanId1.nextLine();
+        //todo Ajouter le scanner avec les whiles qui correspondent aux bonnes conditions (Nationnalité)
+        //todo remplacer la rqt avec les param reçu du scanner -> b:Pays{nom:'_PARAM_}
+        Result rqt = bdd.run("match(a:Joueur)-[r:JOUE_DANS_PAYS]->(b:Pays{nom:'France'}) where a.general>'85' and a.age > '18' return a,b");
+        while (rqt.hasNext()) {
+            Record rJoueur = rqt.next();
+            Value valueJoueur = rJoueur.get("j");
+            Joueur j = new Joueur(valueJoueur.get("general").asString(), valueJoueur.get("nom").asString(), valueJoueur.get("prenom").asString(), valueJoueur.get("age").asString());
+            JoueurAvecRelation jvr = new JoueurAvecRelation(j, rJoueur.get("jp").get("nom").asString(), rJoueur.get("jc").get("nom").asString(), rJoueur.get("p2").get("nom").asString());
+            System.out.println(j);
+        }
+    }
+
+    public static void getJoueurChampionnatEtNationnalite(Bdd bdd) {
+        //Scanner scanId1 = new Scanner(System.in);
+        //System.out.println("Entrez une nationnalité ");
+        //String nationalite = scanId1.nextLine();
+        //todo Ajouter le scanner avec les whiles qui correspondent aux bonnes conditions (Nationnalité et championnat existant)
+        //todo trouver les bons champs pour ajouter un joueur avec relation
+        //todo remplacer la rqt avec les param reçu du scanner -> b:Pays{nom:'_PARAM_}[..] jc:Championnat{nom : _PARAM'}
+        Result rqt = bdd.run("match(j:Joueur)-[r:JOUE_DANS_PAYS]->(jp:Pays{nom:'France'}),(j)-[c:JOUE_DANS_CHAMPIONNAT]->(jc:Championnat{nom:'Premier League'}) return j,r,jp,jc,c");
+        while (rqt.hasNext()) {
+            Record rJoueur = rqt.next();
+            Value valueJoueur = rJoueur.get("j");
+            Joueur j = new Joueur(valueJoueur.get("general").asString(), valueJoueur.get("nom").asString(), valueJoueur.get("prenom").asString(), valueJoueur.get("age").asString());
+            JoueurAvecRelation jvr = new JoueurAvecRelation(j, rJoueur.get("jp").get("nom").asString(), rJoueur.get("jc").get("nom").asString(), rJoueur.get("p2").get("nom").asString());
+            System.out.println(j);
+        }
+    }
+
+
 
     public static void getListeJoueurCompatibleDansPoste(Bdd bdd){
         Scanner scanId1 = new Scanner(System.in);
@@ -158,7 +192,6 @@ public class Applic {
                 " return j,path,p,p2,jp,jc,jp2,jc2" +
                 " order by (j2.general) desc" +
                 " limit 18");
-
         Record rJoueur = rqt.next();
         Value valueJoueur = rJoueur.get("j");
 

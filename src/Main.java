@@ -11,7 +11,8 @@ public class Main {
         // Création des noeuds et des relations
         //metier.Applic.creerBdd(bdd);
         //System.out.println(Applic.getMeilleurJoueur(bdd));
-        Applic.getListeJoueurCompatibleDansPoste(bdd);
+       // Applic.getListeJoueurCompatibleDansPoste(bdd);
+        Applic.getJoueurChampionnatEtNationnalite(bdd);
         // close bdd
         bdd.close();
     }
