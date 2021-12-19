@@ -60,6 +60,7 @@ public class Applic {
         creerRelations(bdd);
     }
 
+    // L'utilisateur choisi deux joueur et le programme retourne un joueur compatible avec les deux autres. (Même championnat ou même nationnalité)
     public static String getMeilleurJoueur(Bdd bdd){
         Scanner scanId1 = new Scanner(System.in);
         System.out.println("Entrer le premier id de joueur ATTENTION n'entrez pas un chiffre entre [995-1023] : ");
@@ -97,6 +98,8 @@ public class Applic {
         }
         return rows;
     }
+
+    //Affiche tous les joueurs d'une nationnalité spécifique, d'une tranche d'age spécifique et un général spécifique
     public static void getJoueurNationnalite(Bdd bdd) {
         //Scanner scanId1 = new Scanner(System.in);
         //System.out.println("Entrez une nationnalité ");
@@ -106,13 +109,14 @@ public class Applic {
         Result rqt = bdd.run("match(a:Joueur)-[r:JOUE_DANS_PAYS]->(b:Pays{nom:'France'}) where a.general>'85' and a.age > '18' return a,b");
         while (rqt.hasNext()) {
             Record rJoueur = rqt.next();
-            Value valueJoueur = rJoueur.get("j");
+            Value valueJoueur = rJoueur.get("a");
             Joueur j = new Joueur(valueJoueur.get("general").asString(), valueJoueur.get("nom").asString(), valueJoueur.get("prenom").asString(), valueJoueur.get("age").asString());
-            JoueurAvecRelation jvr = new JoueurAvecRelation(j, rJoueur.get("jp").get("nom").asString(), rJoueur.get("jc").get("nom").asString(), rJoueur.get("p2").get("nom").asString());
+            //JoueurAvecRelation jvr = new JoueurAvecRelation(j, rJoueur.get("jp").get("nom").asString(), rJoueur.get("jc").get("nom").asString(), rJoueur.get("p2").get("nom").asString());
             System.out.println(j);
         }
     }
 
+    // Affiche tous les joueurs d'une nationalité spécifique, d'un championnat spécifique et à un poste spécifique
     public static void getJoueurChampionnatEtNationnalite(Bdd bdd) {
         //Scanner scanId1 = new Scanner(System.in);
         //System.out.println("Entrez une nationnalité ");
@@ -120,18 +124,20 @@ public class Applic {
         //todo Ajouter le scanner avec les whiles qui correspondent aux bonnes conditions (Nationnalité et championnat existant)
         //todo trouver les bons champs pour ajouter un joueur avec relation
         //todo remplacer la rqt avec les param reçu du scanner -> b:Pays{nom:'_PARAM_}[..] jc:Championnat{nom : _PARAM'}
-        Result rqt = bdd.run("match(j:Joueur)-[r:JOUE_DANS_PAYS]->(jp:Pays{nom:'France'}),(j)-[c:JOUE_DANS_CHAMPIONNAT]->(jc:Championnat{nom:'Premier League'}) return j,r,jp,jc,c");
+        Result rqt = bdd.run("match(j:Joueur)-[r:JOUE_DANS_PAYS]->(jp:Pays{nom:'France'})," +
+                "(j)-[c:JOUE_DANS_CHAMPIONNAT]->(jc:Championnat{nom:'Premier League'}), " +
+                "(j)-[p:JOUE_DANS_POSTE]->(p2:Poste{nom:'Attaquant'}) " +
+                "return j,r,jp,jc,c,p2");
         while (rqt.hasNext()) {
             Record rJoueur = rqt.next();
             Value valueJoueur = rJoueur.get("j");
             Joueur j = new Joueur(valueJoueur.get("general").asString(), valueJoueur.get("nom").asString(), valueJoueur.get("prenom").asString(), valueJoueur.get("age").asString());
             JoueurAvecRelation jvr = new JoueurAvecRelation(j, rJoueur.get("jp").get("nom").asString(), rJoueur.get("jc").get("nom").asString(), rJoueur.get("p2").get("nom").asString());
-            System.out.println(j);
+            System.out.println(jvr);
         }
     }
 
-
-
+    // Récupère une liste des joueurs disponible à un poste spécifique. Retourne les chemins et le type de lien entre les joueurs récupéré et le joueur choisi par l'utilisateur
     public static void getListeJoueurCompatibleDansPoste(Bdd bdd){
         Scanner scanId1 = new Scanner(System.in);
         System.out.println("Entrer l'id du joueur ATTENTION n'entrez pas un chiffre entre [995-1023] : ");
