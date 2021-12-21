@@ -4,11 +4,9 @@ import dao.Bdd;
 import dao.ReadFile;
 import domaine.Joueur;
 import domaine.JoueurAvecRelation;
-import jdk.swing.interop.SwingInterOpUtils;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Value;
-import org.neo4j.driver.exceptions.NoSuchRecordException;
 import org.neo4j.driver.types.Node;
 import org.neo4j.driver.types.Path;
 
@@ -109,7 +107,6 @@ public class Applic {
             Record rJoueur = rqt.next();
             Value valueJoueur = rJoueur.get("a");
             Joueur j = new Joueur(valueJoueur.get("general").asString(), valueJoueur.get("nom").asString(), valueJoueur.get("prenom").asString(), valueJoueur.get("age").asString());
-            //JoueurAvecRelation jvr = new JoueurAvecRelation(j, rJoueur.get("jp").get("nom").asString(), rJoueur.get("jc").get("nom").asString(), rJoueur.get("p2").get("nom").asString());
             System.out.println(j);
         }
     }
@@ -148,7 +145,7 @@ public class Applic {
 
 
         Scanner scanPoste = new Scanner(System.in);
-        System.out.println("Entrer un poste [Attaquant, Gardien, Milieu, Defenseur] : ");
+        System.out.println("Entrer un poste (Ne pas oublier la majuscule) [Attaquant, Gardien, Milieu, Defenseur] : ");
         Boolean posteExist = false;
         String poste = scanPoste.nextLine();
         switch (poste){
@@ -168,7 +165,7 @@ public class Applic {
 
         while (!posteExist) {
             scanPoste = new Scanner(System.in);
-            System.out.println("ATTENTION n'entrez pas un poste inexistant veuillez entrer un de ces postes [Attaquant, Gardien, Milieu, Defenseur] : ");
+            System.out.println("ATTENTION n'entrez pas un poste inexistant veuillez entrer un de ces postes (Ne pas oublier la majuscule) [Attaquant, Gardien, Milieu, Defenseur] : ");
             poste = scanPoste.nextLine();
             switch (poste){
                 case "Attaquant":
