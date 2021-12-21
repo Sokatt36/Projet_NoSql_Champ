@@ -7,11 +7,11 @@ public class Main {
         Bdd bdd = new Bdd();
         bdd.connect();
         //Suppréssion BDD afin de rendre le script constemment exécutable
-       //bdd.deleteBase();
+        //bdd.deleteBase();
         // Création des noeuds et des relations
         //metier.Applic.creerBdd(bdd);
         System.out.println("---------------------------REQUÊTE 1-----------------------------------------");
-        System.out.println(Applic.getMeilleurJoueur(bdd));
+        Applic.getMeilleurJoueur(bdd);
         System.out.println("---------------------------REQUÊTE 2-----------------------------------------");
         Applic.getListeJoueurCompatibleDansPoste(bdd);
         System.out.println("---------------------------REQUÊTE 3-----------------------------------------");
