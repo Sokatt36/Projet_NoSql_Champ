@@ -57,21 +57,21 @@ public class Applic {
     // L'utilisateur choisi deux joueur et le programme retourne un joueur compatible avec les deux autres. (Même championnat ou même nationnalité)
     public static void getMeilleurJoueur(Bdd bdd){
         Scanner scanId1 = new Scanner(System.in);
-        System.out.println("Entrer le premier id de joueur ATTENTION n'entrez pas un chiffre entre [995-1023] : ");
+        System.out.println("Entrer le premier id de joueur ATTENTION n'entrez pas un chiffre entre [983-1015] : ");
         String id1 = scanId1.nextLine();
-        while (Integer.parseInt(id1) > 994) {
+        while (Integer.parseInt(id1) > 982 && Integer.parseInt(id1) < 1016) {
             scanId1 = new Scanner(System.in);
-            System.out.println("ATTENTION n'entrez pas un chiffre entre [995-1023] veuillez ressayer : ");
+            System.out.println("ATTENTION n'entrez pas un chiffre entre [983-1015] veuillez ressayer : ");
             id1 = scanId1.nextLine();
         }
 
 
         Scanner scanId2 = new Scanner(System.in);
-        System.out.println("Entrer le deuxième id ATTENTION n'entrez pas un chiffre entre [995-1023] : ");
+        System.out.println("Entrer le deuxième id ATTENTION n'entrez pas un chiffre entre [983-1015] : ");
         String id2 = scanId2.nextLine();
-        while (Integer.parseInt(id2) > 994) {
+        while (Integer.parseInt(id2) > 982 && Integer.parseInt(id2) < 1016) {
             scanId2 = new Scanner(System.in);
-            System.out.println("ATTENTION n'entrez pas un chiffre entre [995-1023] veuillez ressayer : ");
+            System.out.println("ATTENTION n'entrez pas un chiffre entre [983-1015] veuillez ressayer : ");
             id2 = scanId2.nextLine();
         }
 
@@ -97,11 +97,6 @@ public class Applic {
 
     //Affiche tous les joueurs d'une nationnalité spécifique, d'une tranche d'age spécifique et un général spécifique
     public static void getJoueurNationnalite(Bdd bdd) {
-        //Scanner scanId1 = new Scanner(System.in);
-        //System.out.println("Entrez une nationnalité ");
-        //String nationalite = scanId1.nextLine();
-        //todo Ajouter le scanner avec les whiles qui correspondent aux bonnes conditions (Nationnalité)
-        //todo remplacer la rqt avec les param reçu du scanner -> b:Pays{nom:'_PARAM_}
         Result rqt = bdd.run("match(a:Joueur)-[r:JOUE_DANS_PAYS]->(b:Pays{nom:'France'}) where a.general>'85' and a.age > '18' return a,b");
         while (rqt.hasNext()) {
             Record rJoueur = rqt.next();
@@ -113,12 +108,6 @@ public class Applic {
 
     // Affiche tous les joueurs d'une nationalité spécifique, d'un championnat spécifique et à un poste spécifique
     public static void getJoueurChampionnatEtNationnalite(Bdd bdd) {
-        //Scanner scanId1 = new Scanner(System.in);
-        //System.out.println("Entrez une nationnalité ");
-        //String nationalite = scanId1.nextLine();
-        //todo Ajouter le scanner avec les whiles qui correspondent aux bonnes conditions (Nationnalité et championnat existant)
-        //todo trouver les bons champs pour ajouter un joueur avec relation
-        //todo remplacer la rqt avec les param reçu du scanner -> b:Pays{nom:'_PARAM_}[..] jc:Championnat{nom : _PARAM'}
         Result rqt = bdd.run("match(j:Joueur)-[r:JOUE_DANS_PAYS]->(jp:Pays{nom:'France'})," +
                 "(j)-[c:JOUE_DANS_CHAMPIONNAT]->(jc:Championnat{nom:'Premier League'}), " +
                 "(j)-[p:JOUE_DANS_POSTE]->(p2:Poste{nom:'Attaquant'}) " +
@@ -135,52 +124,37 @@ public class Applic {
     // Récupère une liste des joueurs disponible à un poste spécifique. Retourne les chemins et le type de lien entre les joueurs récupéré et le joueur choisi par l'utilisateur
     public static void getListeJoueurCompatibleDansPoste(Bdd bdd){
         Scanner scanId1 = new Scanner(System.in);
-        System.out.println("Entrer l'id du joueur ATTENTION n'entrez pas un chiffre entre [995-1023] : ");
+        System.out.println("Entrer l'id du joueur ATTENTION n'entrez pas un chiffre entre [983-1015] : ");
         String id1 = scanId1.nextLine();
-        while (Integer.parseInt(id1) > 994) {
+        while (Integer.parseInt(id1) > 982 && Integer.parseInt(id1) < 1016) {
             scanId1 = new Scanner(System.in);
-            System.out.println("ATTENTION n'entrez pas un chiffre entre [995-1023] veuillez ressayer : ");
+            System.out.println("ATTENTION n'entrez pas un chiffre entre [983-1015] veuillez ressayer : ");
             id1 = scanId1.nextLine();
         }
 
 
         Scanner scanPoste = new Scanner(System.in);
         System.out.println("Entrer un poste (Ne pas oublier la majuscule) [Attaquant, Gardien, Milieu, Defenseur] : ");
-        Boolean posteExist = false;
+        boolean posteExist = false;
         String poste = scanPoste.nextLine();
-        switch (poste){
-            case "Attaquant":
-                posteExist = true;
-                break;
-            case "Defenseur":
-                posteExist = true;
-                break;
-            case "Milieu":
-                posteExist = true;
-                break;
-            case "Gardien":
-                posteExist = true;
-                break;
+        switch (poste) {
+            case "Attaquant" -> posteExist = true;
+            case "Defenseur" -> posteExist = true;
+            case "Milieu" -> posteExist = true;
+            case "Gardien" -> posteExist = true;
         }
 
         while (!posteExist) {
             scanPoste = new Scanner(System.in);
             System.out.println("ATTENTION n'entrez pas un poste inexistant veuillez entrer un de ces postes (Ne pas oublier la majuscule) [Attaquant, Gardien, Milieu, Defenseur] : ");
             poste = scanPoste.nextLine();
-            switch (poste){
-                case "Attaquant":
-                    posteExist = true;
-                    break;
-                case "Defenseur":
-                    posteExist = true;
-                    break;
-                case "Milieu":
-                    posteExist = true;
-                    break;
-                case "Gardien":
-                    posteExist = true;
-                    break;
-            }
+            posteExist = switch (poste) {
+                case "Attaquant" -> true;
+                case "Defenseur" -> true;
+                case "Milieu" -> true;
+                case "Gardien" -> true;
+                default -> false;
+            };
         }
         Result rqt = bdd.run("match(j:Joueur) -[:JOUE_DANS_POSTE]-> (p2:Poste)," +
                 "(j) -[:JOUE_DANS_PAYS]-> (jp:Pays)," +
