@@ -68,9 +68,9 @@ public class Applic {
         Scanner scanId2 = new Scanner(System.in);
         System.out.println("Entrer le deuxième id ATTENTION n'entrez pas un chiffre entre [983-1015] ou plus grand que 1037 : ");
         String id2 = scanId2.nextLine();
-        while (Integer.parseInt(id2) > 982 && Integer.parseInt(id2) < 1016 || Integer.parseInt(id2) > 1037) {
+        while (Integer.parseInt(id2) > 982 && Integer.parseInt(id2) < 1016 || Integer.parseInt(id2) > 1037 || Integer.parseInt(id1) == Integer.parseInt(id2) ) {
             scanId2 = new Scanner(System.in);
-            System.out.println("ATTENTION n'entrez pas un chiffre entre [983-1015] ou plus grand que 1037 veuillez ressayer : ");
+            System.out.println("ATTENTION n'entrez pas un chiffre entre [983-1015] ou plus grand que 1037. Merci de ne pas choisir le même chiffre que l'id 1 veuillez ressayer : ");
             id2 = scanId2.nextLine();
         }
 
@@ -105,6 +105,10 @@ public class Applic {
                 " return p,a,p2,a2,p3,a4,a3,a5 " +
                 "order by (p3.general) desc " +
                 "limit 1");
+
+        if (!rqt.hasNext()){
+            System.out.println("Malheureusement aucun joueur compatible n'a été trouvé");
+        }
 
         while (rqt.hasNext()){
             Record ligne = rqt.next();
