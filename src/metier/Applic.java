@@ -53,24 +53,24 @@ public class Applic {
         creerRelations(bdd);
     }
 
-    // L'utilisateur choisi deux joueur et le programme retourne un joueur compatible avec les deux autres. (Même championnat ou même nationnalité)
+    // L'utilisateur choisi deux joueur, un poste et le programme retourne un joueur compatible avec les deux autres au poste choisi. (Même championnat ou même nationnalité)
     public static void getMeilleurJoueur(Bdd bdd){
         Scanner scanId1 = new Scanner(System.in);
-        System.out.println("Entrer le premier id de joueur ATTENTION n'entrez pas un chiffre entre [983-1015] : ");
+        System.out.println("Entrer le premier id de joueur ATTENTION n'entrez pas un chiffre entre [983-1015] ou plus grand que 1037 : ");
         String id1 = scanId1.nextLine();
-        while (Integer.parseInt(id1) > 982 && Integer.parseInt(id1) < 1016) {
+        while (Integer.parseInt(id1) > 982 && Integer.parseInt(id1) < 1016 || Integer.parseInt(id1) > 1037) {
             scanId1 = new Scanner(System.in);
-            System.out.println("ATTENTION n'entrez pas un chiffre entre [983-1015] veuillez ressayer : ");
+            System.out.println("ATTENTION n'entrez pas un chiffre entre [983-1015] ou plus grand que 1037 veuillez ressayer : ");
             id1 = scanId1.nextLine();
         }
 
 
         Scanner scanId2 = new Scanner(System.in);
-        System.out.println("Entrer le deuxième id ATTENTION n'entrez pas un chiffre entre [983-1015] : ");
+        System.out.println("Entrer le deuxième id ATTENTION n'entrez pas un chiffre entre [983-1015] ou plus grand que 1037 : ");
         String id2 = scanId2.nextLine();
-        while (Integer.parseInt(id2) > 982 && Integer.parseInt(id2) < 1016) {
+        while (Integer.parseInt(id2) > 982 && Integer.parseInt(id2) < 1016 || Integer.parseInt(id2) > 1037) {
             scanId2 = new Scanner(System.in);
-            System.out.println("ATTENTION n'entrez pas un chiffre entre [983-1015] veuillez ressayer : ");
+            System.out.println("ATTENTION n'entrez pas un chiffre entre [983-1015] ou plus grand que 1037 veuillez ressayer : ");
             id2 = scanId2.nextLine();
         }
 
@@ -113,7 +113,7 @@ public class Applic {
             Joueur j3 = new Joueur(ligne.get("p2").get("general").asString(), ligne.get("p2").get("nom").asString(),ligne.get("p2").get("prenom").asString(), ligne.get("p2").get("age").asString());
 
             System.out.println("Joueur numéro 1 : " + j2.getNom() + " " + j2.getPrenom() + ". Nationnalité : " + ligne.get("a").get("nom").asString());
-            System.out.println("Joueur numéro 1 : " + j3.getNom() + " " + j3.getPrenom() + ". Championnat : " + ligne.get("a2").get("nom").asString());
+            System.out.println("Joueur numéro 2 : " + j3.getNom() + " " + j3.getPrenom() + ". Championnat : " + ligne.get("a2").get("nom").asString());
             System.out.println("Le meilleur joueur pour collaborer est " + j.getNom() + " " + j.getPrenom() + ". Ce joueur/joueuse a comme général " + j.getGeneral() + " et a " + j.getAge() + " ans. Nationnalité : " + ligne.get("a3").get("nom").asString() + ". Championnat : " + ligne.get("a4").get("nom").asString() + ". Poste : " + ligne.get("a5").get("nom").asString());
         }
     }
@@ -121,11 +121,11 @@ public class Applic {
     // Récupère une liste des joueurs disponible à un poste spécifique. Retourne les chemins et le type de lien entre les joueurs récupéré et le joueur choisi par l'utilisateur
     public static void getListeJoueurCompatibleDansPoste(Bdd bdd){
         Scanner scanId1 = new Scanner(System.in);
-        System.out.println("Entrer l'id du joueur ATTENTION n'entrez pas un chiffre entre [983-1015] : ");
+        System.out.println("Entrer l'id du joueur ATTENTION n'entrez pas un chiffre entre [983-1015] ou plus grand que 1037 : ");
         String id1 = scanId1.nextLine();
-        while (Integer.parseInt(id1) > 982 && Integer.parseInt(id1) < 1016) {
+        while (Integer.parseInt(id1) > 982 && Integer.parseInt(id1) < 1016 || Integer.parseInt(id1) > 1037) {
             scanId1 = new Scanner(System.in);
-            System.out.println("ATTENTION n'entrez pas un chiffre entre [983-1015] veuillez ressayer : ");
+            System.out.println("ATTENTION n'entrez pas un chiffre entre [983-1015] ou plus grand que 1037 veuillez ressayer : ");
             id1 = scanId1.nextLine();
         }
 
