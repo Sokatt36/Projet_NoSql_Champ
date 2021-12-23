@@ -75,49 +75,47 @@ public class Applic {
             id2 = scanId2.nextLine();
         }
 
+        Scanner scanPoste = new Scanner(System.in);
+        System.out.println("Entrer un poste (Ne pas oublier la majuscule) [Attaquant, Gardien, Milieu, Defenseur] : ");
+        boolean posteExist = false;
+        String poste = scanPoste.nextLine();
+        switch (poste) {
+            case "Attaquant" -> posteExist = true;
+            case "Defenseur" -> posteExist = true;
+            case "Milieu" -> posteExist = true;
+            case "Gardien" -> posteExist = true;
+        }
+
+        while (!posteExist) {
+            scanPoste = new Scanner(System.in);
+            System.out.println("ATTENTION n'entrez pas un poste inexistant veuillez entrer un de ces postes (Ne pas oublier la majuscule) [Attaquant, Gardien, Milieu, Defenseur] : ");
+            poste = scanPoste.nextLine();
+            posteExist = switch (poste) {
+                case "Attaquant" -> true;
+                case "Defenseur" -> true;
+                case "Milieu" -> true;
+                case "Gardien" -> true;
+                default -> false;
+            };
+        }
+
         Result rqt = bdd.run("match(p:Joueur)-[:JOUE_DANS_PAYS]->(a:Pays)," +
                 "(p2:Joueur)-[:JOUE_DANS_CHAMPIONNAT]->(a2:Championnat)," +
-                "(p3:Joueur) -[:JOUE_DANS_PAYS]->(a3:Pays{nom:a.nom}), (p3)-[:JOUE_DANS_CHAMPIONNAT]-> (a4:Championnat{nom:a2.nom}) " +
+                "(p3:Joueur) -[:JOUE_DANS_PAYS]->(a3:Pays{nom:a.nom}), (p3)-[:JOUE_DANS_CHAMPIONNAT]-> (a4:Championnat{nom:a2.nom}), (p3)-[:JOUE_DANS_POSTE]-> (a5:Poste{nom:\""+ poste +"\"}) " +
                 "where ID(p) = "+ id1 + " AND ID(p2) = " + id2 +
-                " return p,a,p2,a2,p3,a4,a3 " +
+                " return p,a,p2,a2,p3,a4,a3,a5 " +
                 "order by (p3.general) desc " +
                 "limit 1");
 
         while (rqt.hasNext()){
             Record ligne = rqt.next();
-            Joueur j = new Joueur(bdd.enleverGuillemet(ligne.get("p3").get("general").toString()), bdd.enleverGuillemet(ligne.get("p3").get("nom").toString()),bdd.enleverGuillemet(ligne.get("p3").get("prenom").toString()), bdd.enleverGuillemet(ligne.get("p3").get("age").toString()));
-            Joueur j2 = new Joueur(bdd.enleverGuillemet(ligne.get("p").get("general").toString()), bdd.enleverGuillemet(ligne.get("p").get("nom").toString()),bdd.enleverGuillemet(ligne.get("p").get("prenom").toString()), bdd.enleverGuillemet(ligne.get("p").get("age").toString()));
-            Joueur j3 = new Joueur(bdd.enleverGuillemet(ligne.get("p2").get("general").toString()), bdd.enleverGuillemet(ligne.get("p2").get("nom").toString()),bdd.enleverGuillemet(ligne.get("p2").get("prenom").toString()), bdd.enleverGuillemet(ligne.get("p2").get("age").toString()));
+            Joueur j = new Joueur(ligne.get("p3").get("general").asString(), ligne.get("p3").get("nom").asString(),ligne.get("p3").get("prenom").asString(), ligne.get("p3").get("age").asString());
+            Joueur j2 = new Joueur(ligne.get("p").get("general").asString(), ligne.get("p").get("nom").asString(),ligne.get("p").get("prenom").asString(), ligne.get("p").get("age").asString());
+            Joueur j3 = new Joueur(ligne.get("p2").get("general").asString(), ligne.get("p2").get("nom").asString(),ligne.get("p2").get("prenom").asString(), ligne.get("p2").get("age").asString());
 
-            System.out.println("Joueur numéro 1 : " + j2.getNom() + " " + j2.getPrenom() + ". Nationnalité : " + ligne.get("a").get("nom"));
-            System.out.println("Joueur numéro 1 : " + j3.getNom() + " " + j3.getPrenom() + ". Championnat : " + ligne.get("a2").get("nom"));
-            System.out.println("Le meilleur joueur pour collaborer est " + j.getNom() + " " + j.getPrenom() + ". Ce joueur/joueuse a comme général " + j.getGeneral() + " et a " + j.getAge() + " ans. Nationnalité : " + ligne.get("a3").get("nom") + ". Championnat : " + ligne.get("a4").get("nom"));
-        }
-    }
-
-    //Affiche tous les joueurs d'une nationnalité spécifique, d'une tranche d'age spécifique et un général spécifique
-    public static void getJoueurNationnalite(Bdd bdd) {
-        Result rqt = bdd.run("match(a:Joueur)-[r:JOUE_DANS_PAYS]->(b:Pays{nom:'France'}) where a.general>'85' and a.age > '18' return a,b");
-        while (rqt.hasNext()) {
-            Record rJoueur = rqt.next();
-            Value valueJoueur = rJoueur.get("a");
-            Joueur j = new Joueur(valueJoueur.get("general").asString(), valueJoueur.get("nom").asString(), valueJoueur.get("prenom").asString(), valueJoueur.get("age").asString());
-            System.out.println(j);
-        }
-    }
-
-    // Affiche tous les joueurs d'une nationalité spécifique, d'un championnat spécifique et à un poste spécifique
-    public static void getJoueurChampionnatEtNationnalite(Bdd bdd) {
-        Result rqt = bdd.run("match(j:Joueur)-[r:JOUE_DANS_PAYS]->(jp:Pays{nom:'France'})," +
-                "(j)-[c:JOUE_DANS_CHAMPIONNAT]->(jc:Championnat{nom:'Premier League'}), " +
-                "(j)-[p:JOUE_DANS_POSTE]->(p2:Poste{nom:'Attaquant'}) " +
-                "return j,r,jp,jc,c,p2");
-        while (rqt.hasNext()) {
-            Record rJoueur = rqt.next();
-            Value valueJoueur = rJoueur.get("j");
-            Joueur j = new Joueur(valueJoueur.get("general").asString(), valueJoueur.get("nom").asString(), valueJoueur.get("prenom").asString(), valueJoueur.get("age").asString());
-            JoueurAvecRelation jvr = new JoueurAvecRelation(j, rJoueur.get("jp").get("nom").asString(), rJoueur.get("jc").get("nom").asString(), rJoueur.get("p2").get("nom").asString());
-            System.out.println(jvr);
+            System.out.println("Joueur numéro 1 : " + j2.getNom() + " " + j2.getPrenom() + ". Nationnalité : " + ligne.get("a").get("nom").asString());
+            System.out.println("Joueur numéro 1 : " + j3.getNom() + " " + j3.getPrenom() + ". Championnat : " + ligne.get("a2").get("nom").asString());
+            System.out.println("Le meilleur joueur pour collaborer est " + j.getNom() + " " + j.getPrenom() + ". Ce joueur/joueuse a comme général " + j.getGeneral() + " et a " + j.getAge() + " ans. Nationnalité : " + ligne.get("a3").get("nom").asString() + ". Championnat : " + ligne.get("a4").get("nom").asString() + ". Poste : " + ligne.get("a5").get("nom").asString());
         }
     }
 
@@ -195,5 +193,33 @@ public class Applic {
             System.out.println();
         }
     }
+
+    //Affiche tous les joueurs d'une nationnalité spécifique, d'une tranche d'age spécifique et un général spécifique
+    public static void getJoueurNationnalite(Bdd bdd) {
+        Result rqt = bdd.run("match(a:Joueur)-[r:JOUE_DANS_PAYS]->(b:Pays{nom:'France'}) where a.general>'85' and a.age > '18' return a,b");
+        while (rqt.hasNext()) {
+            Record rJoueur = rqt.next();
+            Value valueJoueur = rJoueur.get("a");
+            Joueur j = new Joueur(valueJoueur.get("general").asString(), valueJoueur.get("nom").asString(), valueJoueur.get("prenom").asString(), valueJoueur.get("age").asString());
+            System.out.println(j);
+        }
+    }
+
+    // Affiche tous les joueurs d'une nationalité spécifique, d'un championnat spécifique et à un poste spécifique
+    public static void getJoueurChampionnatEtNationnalite(Bdd bdd) {
+        Result rqt = bdd.run("match(j:Joueur)-[r:JOUE_DANS_PAYS]->(jp:Pays{nom:'France'})," +
+                "(j)-[c:JOUE_DANS_CHAMPIONNAT]->(jc:Championnat{nom:'Premier League'}), " +
+                "(j)-[p:JOUE_DANS_POSTE]->(p2:Poste{nom:'Attaquant'}) " +
+                "return j,r,jp,jc,c,p2");
+        while (rqt.hasNext()) {
+            Record rJoueur = rqt.next();
+            Value valueJoueur = rJoueur.get("j");
+            Joueur j = new Joueur(valueJoueur.get("general").asString(), valueJoueur.get("nom").asString(), valueJoueur.get("prenom").asString(), valueJoueur.get("age").asString());
+            JoueurAvecRelation jvr = new JoueurAvecRelation(j, rJoueur.get("jp").get("nom").asString(), rJoueur.get("jc").get("nom").asString(), rJoueur.get("p2").get("nom").asString());
+            System.out.println(jvr);
+        }
+    }
+
+
 
 }

@@ -1,7 +1,6 @@
 package dao;
 
 import org.neo4j.driver.*;
-import org.neo4j.driver.Record;
 
 import java.util.*;
 
@@ -42,16 +41,6 @@ public class Bdd {
         return lst[random];
     }
 
-    public String enleverGuillemet(String i){
-        String mot = "";
-        for (int j = 0; j < i.length(); j++) {
-            if (i.charAt(j) != '"'){
-                mot += i.charAt(j);
-            }
-        }
-        return mot;
-    }
-
     public void creerJoueur(String... data){
         run("CREATE (n:Joueur {nom: '"+data[0]+"',prenom :'"+data[1]+"', age: '"+data[2]+"', general :'"+data[3]+"'})");
     }
@@ -69,10 +58,6 @@ public class Bdd {
 
     public void deleteBase(){
         run("match(a) detach delete a");
-    }
-
-    public void deleteJoueur(){
-        run("match(a:Joueur) detach delete a");
     }
 
     public void creerRelationJoueurNationnalite(String ...data){
