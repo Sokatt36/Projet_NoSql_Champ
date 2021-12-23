@@ -3,26 +3,26 @@ package domaine;
 public class JoueurAvecRelation {
 
     Joueur joueur;
-    String nationnalite;
-    String championnat;
-    String poste;
+    Nationalite nationnalite;
+    Championnat championnat;
+    Poste poste;
 
-    public JoueurAvecRelation(Joueur joueur, String nationnalite, String championnat, String poste) {
+    public JoueurAvecRelation(Joueur joueur, Nationalite nationnalite, Championnat championnat, Poste poste) {
         this.joueur = joueur;
         this.nationnalite = nationnalite;
         this.championnat = championnat;
         this.poste = poste;
     }
 
-    public String getNationnalite() {
+    public Nationalite getNationnalite() {
         return nationnalite;
     }
 
-    public String getChampionnat() {
+    public Championnat getChampionnat() {
         return championnat;
     }
 
-    public String getPoste() {
+    public Poste getPoste() {
         return poste;
     }
 
@@ -45,7 +45,7 @@ public class JoueurAvecRelation {
     @Override
     public String toString() {
         return "JoueurAvecRelation{" +
-                "joueur=" + joueur.toString() +
+                "joueur=" + joueur +
                 ", nationnalite='" + nationnalite + '\'' +
                 ", championnat='" + championnat + '\'' +
                 ", poste='" + poste + '\'' +

@@ -2,8 +2,7 @@ package metier;
 
 import dao.Bdd;
 import dao.ReadFile;
-import domaine.Joueur;
-import domaine.JoueurAvecRelation;
+import domaine.*;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Value;
@@ -169,7 +168,11 @@ public class Applic {
         Value valueJoueur = rJoueur.get("j");
 
         Joueur j = new Joueur(valueJoueur.get("general").asString(), valueJoueur.get("nom").asString(), valueJoueur.get("prenom").asString(), valueJoueur.get("age").asString());
-        JoueurAvecRelation jvr = new JoueurAvecRelation(j, rJoueur.get("jp").get("nom").asString(), rJoueur.get("jc").get("nom").asString(), rJoueur.get("p2").get("nom").asString());
+        Nationalite n = new Nationalite(rJoueur.get("jp").get("nom").asString());
+        Poste p = new Poste(rJoueur.get("p2").get("nom").asString());
+        Championnat c = new Championnat(rJoueur.get("jc").get("nom").asString());
+
+        JoueurAvecRelation jvr = new JoueurAvecRelation(j, n, c, p);
 
         System.out.println(j.getNom() + " " + j.getPrenom() + " souhaite trouver un " + poste + ". Voici les différents chemin afin d'accéder aux différentes possibilités : \n");
         while (rqt.hasNext()) {
@@ -215,7 +218,10 @@ public class Applic {
             Record rJoueur = rqt.next();
             Value valueJoueur = rJoueur.get("j");
             Joueur j = new Joueur(valueJoueur.get("general").asString(), valueJoueur.get("nom").asString(), valueJoueur.get("prenom").asString(), valueJoueur.get("age").asString());
-            JoueurAvecRelation jvr = new JoueurAvecRelation(j, rJoueur.get("jp").get("nom").asString(), rJoueur.get("jc").get("nom").asString(), rJoueur.get("p2").get("nom").asString());
+            Nationalite n = new Nationalite(rJoueur.get("jp").get("nom").asString());
+            Poste p = new Poste(rJoueur.get("p2").get("nom").asString());
+            Championnat c = new Championnat(rJoueur.get("jc").get("nom").asString());
+            JoueurAvecRelation jvr = new JoueurAvecRelation(j, n, c, p);
             System.out.println(jvr);
         }
     }
