@@ -198,8 +198,8 @@ public class Applic {
     }
 
     //Affiche tous les joueurs d'une nationnalité spécifique, d'une tranche d'age spécifique et un général spécifique
-    public static void getJoueurNationnalite(Bdd bdd) {
-        Result rqt = bdd.run("match(a:Joueur)-[r:JOUE_DANS_PAYS]->(b:Pays{nom:'France'}) where a.general>'85' and a.age > '18' return a,b");
+    public static void getJoueurNationnalite(Bdd bdd, String pays) {
+        Result rqt = bdd.run("match(a:Joueur)-[r:JOUE_DANS_PAYS]->(b:Pays{nom:\""+pays+"\"}) where a.general>'85' and a.age > '18' return a,b");
         while (rqt.hasNext()) {
             Record rJoueur = rqt.next();
             Value valueJoueur = rJoueur.get("a");
@@ -209,10 +209,10 @@ public class Applic {
     }
 
     // Affiche tous les joueurs d'une nationalité spécifique, d'un championnat spécifique et à un poste spécifique
-    public static void getJoueurChampionnatEtNationnalite(Bdd bdd) {
-        Result rqt = bdd.run("match(j:Joueur)-[r:JOUE_DANS_PAYS]->(jp:Pays{nom:'France'})," +
-                "(j)-[c:JOUE_DANS_CHAMPIONNAT]->(jc:Championnat{nom:'Premier League'}), " +
-                "(j)-[p:JOUE_DANS_POSTE]->(p2:Poste{nom:'Attaquant'}) " +
+    public static void getJoueurChampionnatEtNationnalite(Bdd bdd, String pays, String champ, String poste) {
+        Result rqt = bdd.run("match(j:Joueur)-[r:JOUE_DANS_PAYS]->(jp:Pays{nom:\""+pays+"\"})," +
+                "(j)-[c:JOUE_DANS_CHAMPIONNAT]->(jc:Championnat{nom:\""+champ+"\"}), " +
+                "(j)-[p:JOUE_DANS_POSTE]->(p2:Poste{nom:\""+poste+"\"}) " +
                 "return j,r,jp,jc,c,p2");
         while (rqt.hasNext()) {
             Record rJoueur = rqt.next();

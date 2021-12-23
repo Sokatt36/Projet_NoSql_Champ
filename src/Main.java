@@ -15,9 +15,9 @@ public class Main {
         System.out.println("---------------------------REQUÊTE 2-----------------------------------------");
         Applic.getListeJoueurCompatibleDansPoste(bdd);
         System.out.println("---------------------------REQUÊTE 3-----------------------------------------");
-        Applic.getJoueurChampionnatEtNationnalite(bdd);
+        Applic.getJoueurChampionnatEtNationnalite(bdd,"France", "Ligue 1", "Attaquant");
         System.out.println("---------------------------REQUÊTE 4-----------------------------------------");
-        Applic.getJoueurNationnalite(bdd);
+        Applic.getJoueurNationnalite(bdd, "Portugal");
         // close bdd
         bdd.close();
     }
